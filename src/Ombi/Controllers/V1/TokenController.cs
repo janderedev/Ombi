@@ -305,7 +305,16 @@ namespace Ombi.Controllers.V1
                     var user = await _userManager.FindByNameAsync(username);
                     if (user == null)
                     {
-                        return new UnauthorizedResult();
+                        // TODO do this properly
+                        var newUser = new OmbiUser {
+                            UserName = username,
+                            UserType = UserType.LocalUser,
+                            MovieRequestLimit = 0,
+                            EpisodeRequestLimit = 0,
+                            StreamingCountry = "DE"
+                        };
+                        await _userManager.CreateAsync(newUser);
+                        user = await _userManager.FindByNameAsync(username);
                     }
 
                     return await CreateToken(true, user);
