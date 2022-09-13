@@ -315,6 +315,9 @@ namespace Ombi.Controllers.V1
                         };
                         await _userManager.CreateAsync(newUser);
                         user = await _userManager.FindByNameAsync(username);
+                        await _userManager.AddToRoleAsync(user, OmbiRoles.ManageOwnRequests);
+                        await _userManager.AddToRoleAsync(user, OmbiRoles.RequestTv);
+                        await _userManager.AddToRoleAsync(user, OmbiRoles.RequestMovie);
                     }
 
                     return await CreateToken(true, user);
