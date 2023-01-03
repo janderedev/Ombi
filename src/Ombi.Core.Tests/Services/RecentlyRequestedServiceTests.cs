@@ -15,7 +15,6 @@ using Ombi.Store.Repository.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,6 +36,9 @@ namespace Ombi.Core.Tests.Services
                 .ForEach(b => _fixture.Behaviors.Remove(b));
             _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             _mocker = new AutoMocker();
+
+            _mocker.Setup<ICurrentUser, Task<OmbiUser>>(x => x.GetUser()).ReturnsAsync(new OmbiUser { UserName = "test", Alias = "alias", Language = "en" });
+            _mocker.Setup<ICurrentUser, string>(x => x.Username).Returns("test");
             _subject = _mocker.CreateInstance<RecentlyRequestedService>();
         }
 
@@ -67,11 +69,9 @@ namespace Ombi.Core.Tests.Services
             };
             var albums = new List<AlbumRequest>();
             var chilRequests = new List<ChildRequests>();
-            _mocker.Setup<IMovieRequestRepository, IQueryable<MovieRequests>>(x => x.GetAll()).Returns(movies.AsQueryable().BuildMock().Object);
-            _mocker.Setup<IMusicRequestRepository, IQueryable<AlbumRequest>>(x => x.GetAll()).Returns(albums.AsQueryable().BuildMock().Object);
-            _mocker.Setup<ITvRequestRepository, IQueryable<ChildRequests>>(x => x.GetChild()).Returns(chilRequests.AsQueryable().BuildMock().Object);
-            _mocker.Setup<ICurrentUser, Task<OmbiUser>>(x => x.GetUser()).ReturnsAsync(new OmbiUser { UserName = "test", Alias = "alias" });
-            _mocker.Setup<ICurrentUser, string>(x => x.Username).Returns("test");
+            _mocker.Setup<IMovieRequestRepository, IQueryable<MovieRequests>>(x => x.GetAll()).Returns(movies.AsQueryable().BuildMock());
+            _mocker.Setup<IMusicRequestRepository, IQueryable<AlbumRequest>>(x => x.GetAll()).Returns(albums.AsQueryable().BuildMock());
+            _mocker.Setup<ITvRequestRepository, IQueryable<ChildRequests>>(x => x.GetChild()).Returns(chilRequests.AsQueryable().BuildMock());
 
             var result = await _subject.GetRecentlyRequested(CancellationToken.None);
 
@@ -131,11 +131,9 @@ namespace Ombi.Core.Tests.Services
             };
             var albums = new List<AlbumRequest>();
             var chilRequests = new List<ChildRequests>();
-            _mocker.Setup<IMovieRequestRepository, IQueryable<MovieRequests>>(x => x.GetAll()).Returns(movies.AsQueryable().BuildMock().Object);
-            _mocker.Setup<IMusicRequestRepository, IQueryable<AlbumRequest>>(x => x.GetAll()).Returns(albums.AsQueryable().BuildMock().Object);
-            _mocker.Setup<ITvRequestRepository, IQueryable<ChildRequests>>(x => x.GetChild()).Returns(chilRequests.AsQueryable().BuildMock().Object);
-            _mocker.Setup<ICurrentUser, Task<OmbiUser>>(x => x.GetUser()).ReturnsAsync(new OmbiUser { UserName = "test", Alias = "alias" });
-            _mocker.Setup<ICurrentUser, string>(x => x.Username).Returns("test");
+            _mocker.Setup<IMovieRequestRepository, IQueryable<MovieRequests>>(x => x.GetAll()).Returns(movies.AsQueryable().BuildMock());
+            _mocker.Setup<IMusicRequestRepository, IQueryable<AlbumRequest>>(x => x.GetAll()).Returns(albums.AsQueryable().BuildMock());
+            _mocker.Setup<ITvRequestRepository, IQueryable<ChildRequests>>(x => x.GetChild()).Returns(chilRequests.AsQueryable().BuildMock());
 
             var result = await _subject.GetRecentlyRequested(CancellationToken.None);
 
@@ -164,11 +162,9 @@ namespace Ombi.Core.Tests.Services
             var albums = _fixture.CreateMany<AlbumRequest>(10);
             var chilRequests = _fixture.CreateMany<ChildRequests>(10);
 
-            _mocker.Setup<IMovieRequestRepository, IQueryable<MovieRequests>>(x => x.GetAll()).Returns(movies.AsQueryable().BuildMock().Object);
-            _mocker.Setup<IMusicRequestRepository, IQueryable<AlbumRequest>>(x => x.GetAll()).Returns(albums.AsQueryable().BuildMock().Object);
-            _mocker.Setup<ITvRequestRepository, IQueryable<ChildRequests>>(x => x.GetChild()).Returns(chilRequests.AsQueryable().BuildMock().Object);
-            _mocker.Setup<ICurrentUser, Task<OmbiUser>>(x => x.GetUser()).ReturnsAsync(new OmbiUser { UserName = "test", Alias = "alias" });
-            _mocker.Setup<ICurrentUser, string>(x => x.Username).Returns("test");
+            _mocker.Setup<IMovieRequestRepository, IQueryable<MovieRequests>>(x => x.GetAll()).Returns(movies.AsQueryable().BuildMock());
+            _mocker.Setup<IMusicRequestRepository, IQueryable<AlbumRequest>>(x => x.GetAll()).Returns(albums.AsQueryable().BuildMock());
+            _mocker.Setup<ITvRequestRepository, IQueryable<ChildRequests>>(x => x.GetChild()).Returns(chilRequests.AsQueryable().BuildMock());
 
             var result = await _subject.GetRecentlyRequested(CancellationToken.None);
 
@@ -190,9 +186,9 @@ namespace Ombi.Core.Tests.Services
             var albums = _fixture.CreateMany<AlbumRequest>(10);
             var chilRequests = _fixture.CreateMany<ChildRequests>(10);
 
-            _mocker.Setup<IMovieRequestRepository, IQueryable<MovieRequests>>(x => x.GetAll()).Returns(movies.AsQueryable().BuildMock().Object);
-            _mocker.Setup<IMusicRequestRepository, IQueryable<AlbumRequest>>(x => x.GetAll()).Returns(albums.AsQueryable().BuildMock().Object);
-            _mocker.Setup<ITvRequestRepository, IQueryable<ChildRequests>>(x => x.GetChild()).Returns(chilRequests.AsQueryable().BuildMock().Object);
+            _mocker.Setup<IMovieRequestRepository, IQueryable<MovieRequests>>(x => x.GetAll()).Returns(movies.AsQueryable().BuildMock());
+            _mocker.Setup<IMusicRequestRepository, IQueryable<AlbumRequest>>(x => x.GetAll()).Returns(albums.AsQueryable().BuildMock());
+            _mocker.Setup<ITvRequestRepository, IQueryable<ChildRequests>>(x => x.GetChild()).Returns(chilRequests.AsQueryable().BuildMock());
             _mocker.Setup<ICurrentUser, Task<OmbiUser>>(x => x.GetUser()).ReturnsAsync(new OmbiUser { UserName = "test", Alias = "alias", UserType = UserType.LocalUser  });
             _mocker.Setup<ICurrentUser, string>(x => x.Username).Returns("test");
             _mocker.Setup<OmbiUserManager, Task<bool>>(x => x.IsInRoleAsync(It.IsAny<OmbiUser>(), It.IsAny<string>())).ReturnsAsync(false);

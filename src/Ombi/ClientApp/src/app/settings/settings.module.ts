@@ -50,7 +50,7 @@ import { LandingPageComponent } from "./landingpage/landingpage.component";
 import { LidarrComponent } from "./lidarr/lidarr.component";
 import { LogsComponent } from "./logs/logs.component";
 import { MassEmailComponent } from "./massemail/massemail.component";
-import { MatDialogModule } from "@angular/material/dialog";
+import { MatDialogActions, MatDialogModule } from "@angular/material/dialog";
 import { MatMenuModule } from "@angular/material/menu";
 import { MattermostComponent } from "./notifications/mattermost.component";
 import {MenuModule} from "primeng/menu";
@@ -84,6 +84,9 @@ import { WebhookComponent } from "./notifications/webhook.component";
 import { WhatsAppComponent } from "./notifications/twilio/whatsapp.component";
 import { WikiComponent } from "./wiki.component";
 import { PlexWatchlistComponent } from "./plex/components/watchlist/plex-watchlist.component";
+import { PlexFormComponent } from "./plex/components/plex-form/plex-form.component";
+import { PlexFormFieldComponent } from "./plex/components/form-field/plex-form-field.component";
+import { PlexServerDialogComponent } from "./plex/components/plex-server-dialog/plex-server-dialog.component";
 
 const routes: Routes = [
     { path: "Ombi", component: OmbiComponent, canActivate: [AuthGuard] },
@@ -144,7 +147,7 @@ const routes: Routes = [
         DialogModule,
         SharedModule,
         MatMenuModule,
-        MatDialogModule
+        MatDialogModule,
     ],
     declarations: [
         SettingsMenuComponent,
@@ -191,6 +194,9 @@ const routes: Routes = [
         CloudMobileComponent,
         UpdateDialogComponent,
         PlexWatchlistComponent,
+        PlexFormComponent,
+        PlexFormFieldComponent,
+        PlexServerDialogComponent,
     ],
     exports: [
         RouterModule,
